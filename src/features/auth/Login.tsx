@@ -6,7 +6,13 @@ import ControlledTextInput from "../../components/ControlledTextInput";
 import FormComponent from "../../components/FormComponent";
 import { loginSchema, type LoginSchemaType } from "./authSchema";
 import useLogin from "./useLogin";
-
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+type DecodedToken = {
+  exp: number;
+  iat: number;
+  id: string;
+};
 const Login = () => {
   const navigate = useNavigate();
   const { mutate: login, isPending } = useLogin();
@@ -19,7 +25,12 @@ const Login = () => {
 
   const handleLogin = (data: LoginSchemaType) => {
     login(data, {
-      onSuccess: () => {
+      onSuccess: (res) => {
+        const token = res?.token;
+        const decodedToken = jwtDecode<DecodedToken>(token);
+        const expiresInMs = decodedToken.exp * 1000 - Date.now();
+        const expiresInDays = expiresInMs / (1000 * 60 * 60 * 24);
+        Cookies.set("token", token, { expires: expiresInDays });
         navigate("/captions");
       },
     });

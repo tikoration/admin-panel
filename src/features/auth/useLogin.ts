@@ -4,7 +4,7 @@ import type { LoginSchemaType } from "./authSchema";
 
 const login = async (data: LoginSchemaType) => {
   const response = await axiosInstance.post("/Api/Client/Login", data);
-  return response;
+  return response.data;
 };
 
 const useLogin = () => {

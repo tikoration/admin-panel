@@ -4,7 +4,7 @@ import type { SignUpSchemaType } from "./authSchema";
 
 const SignUp = async (data: SignUpSchemaType) => {
   const response = await axiosInstance.post("/Api/Client/Register", data);
-  return response;
+  return response.data;
 };
 
 const useSignUp = () => {

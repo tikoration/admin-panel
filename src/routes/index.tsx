@@ -4,15 +4,22 @@ import Login from "../features/auth/Login";
 import SignUp from "../features/auth/SignUp";
 import Captions from "../features/captions/Captions";
 import AppLayout from "../layouts/AppLayout";
+import AuthLayout from "../layouts/AuthLayout";
+import Countries from "../features/countries/Countries";
 
 export const routes = [
   {
-    element: <Login />,
-    path: "/login",
-  },
-  {
-    element: <SignUp />,
-    path: "/register",
+    element: <AuthLayout />,
+    children: [
+      {
+        element: <Login />,
+        path: "/login",
+      },
+      {
+        element: <SignUp />,
+        path: "/register",
+      },
+    ],
   },
   {
     element: (
@@ -29,6 +36,7 @@ export const routes = [
         element: <Captions />,
         path: "/captions",
       },
+      { element: <Countries />, path: "/countries" },
     ],
   },
 ];

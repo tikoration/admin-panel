@@ -26,10 +26,16 @@ const CaptionsForm = () => {
 
   return (
     <FormComponent methods={methods} onSubmit={handleSubmit}>
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "10px",
+          justifyContent: "end",
+        }}
+      >
         <ControlledTextInput id="national" name="national" label="National" />
         <ControlledTextInput id="foreign" name="foreign" label="Foreign" />
-        <Button disabled={isPending} type="submit">
+        <Button disabled={isPending} type="submit" variant="contained">
           Add Word
         </Button>
       </Box>

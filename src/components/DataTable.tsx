@@ -27,6 +27,11 @@ type CustomTableProps<TData> = {
   totalElements?: number;
   pending: boolean;
 };
+const truncate = {
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+};
 
 const DataTable = <TData,>({
   data,
@@ -36,7 +41,7 @@ const DataTable = <TData,>({
 }: CustomTableProps<TData>) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const theme = useTheme();
-  const perPage = parseInt(searchParams.get("perPage") || "10", 10);
+  const perPage = parseInt(searchParams.get("perPage") || "15", 10);
   const page = parseInt(searchParams.get("page") || "1", 10);
 
   const table = useReactTable({
@@ -166,6 +171,7 @@ const DataTable = <TData,>({
                               paddingLeft: "16px",
                               fontSize: 14,
                               ...(styles?.width && {
+                                ...truncate,
                                 maxWidth: styles?.width,
                               }),
                               ...styles,

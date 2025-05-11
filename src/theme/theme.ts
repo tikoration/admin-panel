@@ -92,12 +92,17 @@ theme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root: {
+        root: ({ ownerState }) => ({
           height: "44px",
           borderRadius: "12px",
-          color: "#ffffff",
           fontSize: "12px",
-        },
+          color:
+            ownerState.variant === "outlined"
+              ? "#43B1AA"
+              : ownerState.variant === "contained"
+              ? "#ffffff"
+              : undefined,
+        }),
       },
     },
     MuiInputLabel: {
@@ -145,6 +150,7 @@ theme = createTheme({
           boxShadow: "0px 4px 6px -2px rgba(16, 24, 40, 0.08)",
           overflowY: "auto",
           scrollbarWidth: "none",
+          borderRadius: "12px",
         },
       },
     },

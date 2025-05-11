@@ -1,21 +1,21 @@
 import { Box, IconButton } from "@mui/material";
 import DataTable from "../../components/DataTable";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import useGetAllWords, { type IWordsContent } from "./useGetAllWords";
-import useDeleteWord from "./useDeleteWord";
 import EditCaptionModal from "./EditCaptionModal";
 import { useSearchParams } from "react-router-dom";
+import DeleteCaptionModal from "./DeleteCaptionModal";
 
 const CaptionsTable = () => {
-  const { data, refetch, isPending } = useGetAllWords();
-  const { mutate: deleteWord } = useDeleteWord();
+  const { data, isPending } = useGetAllWords();
   const [captionToEdit, setCaptionToEdit] = useState<IWordsContent | null>(
     null
   );
   const [searchParams] = useSearchParams();
+  const [captionToDelete, setCaptionToDelete] = useState<string | null>(null);
 
   const page = parseInt(searchParams.get("page") || "1", 10);
   const perPage = parseInt(searchParams.get("perPage") || "15", 10);
@@ -25,17 +25,6 @@ const CaptionsTable = () => {
     const end = start + perPage;
     return data?.words.slice(start, end);
   }, [data, page, perPage]);
-
-  const handleDelete = useCallback(
-    (id: string) => {
-      deleteWord(id, {
-        onSuccess: () => {
-          refetch();
-        },
-      });
-    },
-    [deleteWord, refetch]
-  );
 
   const columns = useMemo<ColumnDef<IWordsContent>[]>(
     () => [
@@ -76,7 +65,7 @@ const CaptionsTable = () => {
               <IconButton onClick={() => setCaptionToEdit(info.row.original)}>
                 <EditIcon color="action" />
               </IconButton>
-              <IconButton onClick={() => handleDelete(captionId)}>
+              <IconButton onClick={() => setCaptionToDelete(captionId)}>
                 <DeleteOutlineIcon color="error" />
               </IconButton>
             </Box>
@@ -84,7 +73,7 @@ const CaptionsTable = () => {
         },
       },
     ],
-    [handleDelete]
+    []
   );
 
   return (
@@ -98,6 +87,10 @@ const CaptionsTable = () => {
       <EditCaptionModal
         handleClose={() => setCaptionToEdit(null)}
         captionToEdit={captionToEdit}
+      />
+      <DeleteCaptionModal
+        captionToDelete={captionToDelete}
+        handleClose={() => setCaptionToDelete(null)}
       />
     </Box>
   );

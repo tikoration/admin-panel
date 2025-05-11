@@ -28,7 +28,7 @@ const Footer = () => {
           <Typography fontSize={14}> &copy; </Typography>
         </Box>
         <Typography color={theme.palette.grey[900]} fontSize={14}>
-          {new Date().getFullYear()}
+          {new Date().getFullYear()} Admin Panel
         </Typography>
       </Box>
     </Box>
